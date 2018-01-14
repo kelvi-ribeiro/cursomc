@@ -12,10 +12,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.kelvi.cursomc.domain.Categoria;
 import com.kelvi.cursomc.domain.Cidade;
+import com.kelvi.cursomc.domain.Cliente;
+import com.kelvi.cursomc.domain.Endereco;
 import com.kelvi.cursomc.domain.Estado;
 import com.kelvi.cursomc.domain.Produto;
+import com.kelvi.cursomc.domain.enums.TipoCliente;
 import com.kelvi.cursomc.repositories.CategoriaRepository;
 import com.kelvi.cursomc.repositories.CidadeRepository;
+import com.kelvi.cursomc.repositories.ClienteRepository;
+import com.kelvi.cursomc.repositories.EnderecoRepository;
 import com.kelvi.cursomc.repositories.EstadoRepository;
 import com.kelvi.cursomc.repositories.ProdutoRepository;
 
@@ -33,6 +38,12 @@ public class CursomcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private CidadeRepository  cidadeRepository; 
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -73,8 +84,17 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		cidadeRepository.save(Arrays.asList(c1,c2,c3));
 		
+		Cliente cli1 = new Cliente(null,"Maria Da silva","maria@gmail.com","3232323232",TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("2758-2448","78582457"));
+		
+		Endereco e1 = new Endereco(null, "Rua dos marujos", "78", "casa", "Piam", "26180190", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c1);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));		
 		
 		
+		clienteRepository.save(Arrays.asList(cli1));
+		enderecoRepository.save(Arrays.asList(e1,e2));
 		
 	}
 }
